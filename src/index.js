@@ -10,10 +10,23 @@ var app = new Vue({
     currentRoute: '/home',
     isLoading: true,
     moviesList: [],
+    currentFavoriteMovies: [],
   },
   methods: {
+    getFavoriteMovies: async function () {
+      let currentFavoriteMoviesList = JSON.parse(
+        localStorage.getItem('favoriteMoviesList')
+      );
+
+      if (!currentFavoriteMoviesList) {
+        currentFavoriteMoviesList = [];
+      }
+
+      this.currentFavoriteMovies = currentFavoriteMoviesList;
+    },
     switchPage: function (pageName) {
       this.currentRoute = pageName;
+      if (pageName === '/favoritos') this.getFavoriteMovies();
     },
     getMoviesList: async function () {
       const response = await fetch(API_URL);
@@ -42,6 +55,20 @@ var app = new Vue({
         JSON.stringify(currentFavoriteMoviesList)
       );
       alert(`Você salvou o filme ${movieTitle} como favorito!`);
+    },
+    removeFavoriteMovie: function (movieTitle) {
+      const updatedCurrentFavoriteMovies = this.currentFavoriteMovies.filter(
+        (movie) => movie !== movieTitle
+      );
+
+      localStorage.setItem(
+        'favoriteMoviesList',
+        JSON.stringify(updatedCurrentFavoriteMovies)
+      );
+      this.currentFavoriteMovies = updatedCurrentFavoriteMovies;
+
+      alert(`Você removeu o filme ${movieTitle} dos favoritos!`);
+      return;
     },
   },
   mounted: async function () {

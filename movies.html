@@ -122,7 +122,28 @@
       </div>
 
       <div class="container" v-else-if="currentRoute === '/favoritos'">
-        <p>FAVORITOS</p>
+        <div class="row">
+          <div
+            class="col-12 col-md-6 col-lg-4 mb-4"
+            v-for="movie in currentFavoriteMovies"
+          >
+            <div class="container">
+              <div class="card shadow">
+                <div class="card-body">
+                  <h5 class="card-title">{{movie}}</h5>
+                  <button
+                    type="button"
+                    class="btn btn-outline-danger"
+                    v-on:click="removeFavoriteMovie(movie)"
+                  >
+                    <i class="bi bi-trash"></i>
+                    Remover
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
 
